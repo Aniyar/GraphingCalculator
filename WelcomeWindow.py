@@ -6,9 +6,19 @@
 #
 # WARNING! All changes made in this file will be lost!
 
+import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
+from WorkWindow import Ui_WorkWindow
+
 
 class Ui_MainWindow(object):
+
+    def OpenWindow(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui = Ui_WorkWindow()
+        self.ui.setupUi(self.window)
+        self.window.show()
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(523, 350)
@@ -45,6 +55,9 @@ class Ui_MainWindow(object):
         self.pushButton = QtWidgets.QPushButton(self.scrollAreaWidgetContents)
         self.pushButton.setGeometry(QtCore.QRect(190, 190, 121, 41))
         self.pushButton.setObjectName("pushButton")
+
+        self.pushButton.clicked.connect(self.OpenWindow)
+
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.verticalLayout_2.addWidget(self.scrollArea)
         self.verticalLayout.addLayout(self.verticalLayout_2)
@@ -67,3 +80,10 @@ class Ui_MainWindow(object):
         self.label.setText(_translate("MainWindow", "КОНСТРУКТОР ГРАФИКОВ"))
         self.pushButton.setText(_translate("MainWindow", "Начать!"))
 
+if __name__ == '__main__':
+    app = QtWidgets.QApplication(sys.argv)
+    welcomeWindow = QtWidgets.QMainWindow()
+    ui = Ui_MainWindow()
+    ui.setupUi(welcomeWindow)
+    welcomeWindow.show()
+    sys.exit(app.exec())
