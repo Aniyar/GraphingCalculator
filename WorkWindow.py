@@ -7,10 +7,12 @@
 # WARNING! All changes made in this file will be lost!
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
+from numpy import arange
+import pyqtgraph as pg
+from math import *
 
 
 class Ui_WorkWindow(object):
-
 
     def color(self):
         color = QtWidgets.QColorDialog.getColor()
@@ -20,13 +22,14 @@ class Ui_WorkWindow(object):
             )
             self.clr = color.name()
 
-
     def run(self):
-        from numpy import arange
-        import pyqtgraph as pg
-        self.pg.plot([i for i in range(0, self.k, 0.1)],
-                     [eval(self.func) for x in arange(0, self.k, 0.1)],
-                     pen='r')
+        self.k = self.sl.value()
+        self.func = self.functionlineEdit.text()
+        self.graphicsView.plot([i for i in arange(-self.k, self.k, 0.1)],
+                    [eval(self.func) for x in arange(-self.k, self.k, 0.1)],
+                    pen=self.clr)
+        word = '<span style=\" color: %s;\">%s</span>' % (self.clr, self.func)
+        self.textBrowser.append(word)
 
     def setupUi(self, WorkWindow):
 
@@ -79,7 +82,7 @@ class Ui_WorkWindow(object):
         self.KeyboardButton.setObjectName("KeyboardButton")
 
         self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(30, 10, 239, 27))
+        self.label.setGeometry(QtCore.QRect(30, 10, 260, 27))
         font = QtGui.QFont()
         font.setFamily("Angsana New")
         font.setPointSize(14)
@@ -99,7 +102,7 @@ class Ui_WorkWindow(object):
         self.ColorButton.setObjectName("ColorButton")
         self.ColorButton.clicked.connect(self.color)
 
-        self.graphicsView = QtWidgets.QGraphicsView(self.centralwidget)
+        self.graphicsView = pg.PlotWidget(self.centralwidget)
         self.graphicsView.setGeometry(QtCore.QRect(10, 130, 491, 461))
         self.graphicsView.setObjectName("graphicsView")
 
@@ -135,3 +138,4 @@ if __name__ == "__main__":
     ui.setupUi(workWindow)
     workWindow.show()
     sys.exit(app.exec())
+
