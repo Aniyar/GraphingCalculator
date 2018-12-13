@@ -13,7 +13,7 @@ from WorkWindow import Ui_WorkWindow
 
 class Ui_MainWindow(object):
 
-    def OpenWindow(self):
+    def OpenWindow(self):  # открывает окно с графиками (при нажатии кнопки начать)
         self.window = QtWidgets.QMainWindow()
         self.ui = Ui_WorkWindow()
         self.ui.setupUi(self.window)
