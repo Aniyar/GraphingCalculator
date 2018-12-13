@@ -16,7 +16,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.setupUi(self)
         self.kb_done = kb_done
 
-    def write(self):
+    def write(self):  # записывает в лайнэдит текст на нажатой кнопке или его питоновскую версию
         if self.sender() == self.degree_btn:
             self.leval += '**'
         elif self.sender() == self.cot_btn:
