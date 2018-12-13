@@ -15,15 +15,15 @@ from ExceptionDialog import Ui_Dialog
 
 class Ui_WorkWindow(object):
 
-    def axes(self):
-        self.graphicsView.plot([i for i in arange(-self.k, self.k + 0.1, 0.1)],
+    def axes(self):  # рисует оси координат
+        self.graphicsView.plot([i for i in arange(-self.k, self.k + 0.1, 0.1)],   # значение селф к = значение ползунка
                                [0 for x in arange(-self.k, self.k + 0.1, 0.1)],
                                pen='w')
         self.graphicsView.plot([0 for i in arange(-self.k, self.k + 0.1, 0.1)],
                                [x for x in arange(-self.k, self.k + 0.1, 0.1)],
                                pen='w')
 
-    def color(self):
+    def color(self):  # ну вроде все понятно 
         color = QtWidgets.QColorDialog.getColor()
         if color.isValid():
             self.ColorButton.setStyleSheet(
@@ -31,7 +31,8 @@ class Ui_WorkWindow(object):
             )
             self.clr = color.name()
 
-    def run(self):
+    def run(self):   # запускается при нажатии кнопки Начертить. Чертит график функции из текстлайнэдита если это возможно.
+                        # иначе открывает диалоговое окно 
         self.k = self.sl.value()
         self.graphicsView.setRange(yRange=[-self.k, self.k + 0.1])
         self.graphicsView.setRange(xRange=[-self.k, self.k + 0.1])
@@ -41,16 +42,15 @@ class Ui_WorkWindow(object):
             self.graphicsView.plot([i for i in arange(-self.k, self.k + 0.1, 0.1)],
                     [eval(self.func) for x in arange(-self.k, self.k + 0.1, 0.1)],
                     pen=self.clr)
-        except Exception as e:
-            self.ui = Ui_Dialog()
-            print(e)
+        except Exception as e:  # ошибка срабатывает если эвал не сработал. А эвал не работает если функция неправильно записана
+            self.ui = Ui_Dialog()  # открывает диалоговое окно. завершает ран
             self.ui.exec_()
             return
         word = '<span style=\" color: %s;\">%s</span>' % (self.clr, self.func)
-        self.func_lst.append((self.func, self.clr))
+        self.func_lst.append((self.func, self.clr))  # добавляет в текстбраузер и список функций введенную функцию 
         self.textBrowser.append(word)
 
-    def scale_change(self):
+    def scale_change(self):  # для повторной перерисовки графиков при изменении значения ползунка
         self.k = self.sl.value()
         self.graphicsView.setRange(yRange=[-self.k, self.k + 0.1])
         self.graphicsView.setRange(xRange=[-self.k, self.k + 0.1])
@@ -60,32 +60,17 @@ class Ui_WorkWindow(object):
                                    [eval(i[0]) for x in arange(-self.k, self.k + 0.1, 0.1)],
                                    pen=i[1])
 
-    # def check(self, x, func):
-    #     try:
-    #         y = eval(func)
-    #     except Exception as e:
-    #         self.ui = Ui_Dialog()
-    #         print(e)
-    #         self.ui.exec_()
-    #         return False
-    #     return y
-
-    def clearall(self):
+    def clearall(self):  # при нажатии на кнопку "стереть все" стирает все
         self.graphicsView.clear()
         self.textBrowser.clear()
         self.func_lst = []
 
-    def open_kb(self):
-        # self.window = QtWidgets.QMainWindow()
-        # self.ui = Ui_WorkWindow()
-        # self.ui.setupUi(self.window)
-        # # self.window.show()
-        # self.window = QtWidgets.QMainWindow()
+    def open_kb(self):   # открывает клавиатуру со специальными символами при нажатии кнопки "..."
         self.ui = Ui_MainWindow(self.kb_done)
         # self.ui.setupUi(self.window)
         self.ui.show()
 
-    def kb_done(self):
+    def kb_done(self):  # ставит значение из лайнэдита клавиатуры в лайнэдит главного окна при нажатии кнопки done
         self.functionlineEdit.setText(self.ui.get_value())
 
     def setupUi(self, WorkWindow):
