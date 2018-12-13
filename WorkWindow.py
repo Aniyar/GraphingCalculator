@@ -11,6 +11,7 @@ from numpy import arange
 import pyqtgraph as pg
 from math import sin, cos, tan
 from keyboard import Ui_MainWindow
+from ExceptionDialog import Ui_Dialog
 
 class Ui_WorkWindow(object):
 
@@ -36,9 +37,15 @@ class Ui_WorkWindow(object):
         self.graphicsView.setRange(xRange=[-self.k, self.k + 0.1])
         self.axes()
         self.func = self.functionlineEdit.text()
-        self.graphicsView.plot([i for i in arange(-self.k, self.k + 0.1, 0.1)],
-                    [self.check(x, self.func) for x in arange(-self.k, self.k + 0.1, 0.1)],
+        try:
+            self.graphicsView.plot([i for i in arange(-self.k, self.k + 0.1, 0.1)],
+                    [eval(self.func) for x in arange(-self.k, self.k + 0.1, 0.1)],
                     pen=self.clr)
+        except Exception as e:
+            self.ui = Ui_Dialog()
+            print(e)
+            self.ui.exec_()
+            return
         word = '<span style=\" color: %s;\">%s</span>' % (self.clr, self.func)
         self.func_lst.append((self.func, self.clr))
         self.textBrowser.append(word)
@@ -50,15 +57,18 @@ class Ui_WorkWindow(object):
         self.axes()
         for i in self.func_lst:
             self.graphicsView.plot([j for j in arange(-self.k, self.k + 0.1, 0.1)],
-                                   [self.check(x, i[0]) for x in arange(-self.k, self.k + 0.1, 0.1)],
+                                   [eval(i[0]) for x in arange(-self.k, self.k + 0.1, 0.1)],
                                    pen=i[1])
 
-    def check(self, x, func):
-        try:
-            y = eval(func)
-        except Exception:
-            return None
-        return y
+    # def check(self, x, func):
+    #     try:
+    #         y = eval(func)
+    #     except Exception as e:
+    #         self.ui = Ui_Dialog()
+    #         print(e)
+    #         self.ui.exec_()
+    #         return False
+    #     return y
 
     def clearall(self):
         self.graphicsView.clear()
@@ -66,10 +76,17 @@ class Ui_WorkWindow(object):
         self.func_lst = []
 
     def open_kb(self):
-        self.window = QtWidgets.QMainWindow()
-        self.ui = Ui_MainWindow()
-        self.ui.setupUi(self.window)
-        self.window.show()
+        # self.window = QtWidgets.QMainWindow()
+        # self.ui = Ui_WorkWindow()
+        # self.ui.setupUi(self.window)
+        # # self.window.show()
+        # self.window = QtWidgets.QMainWindow()
+        self.ui = Ui_MainWindow(self.kb_done)
+        # self.ui.setupUi(self.window)
+        self.ui.show()
+
+    def kb_done(self):
+        self.functionlineEdit.setText(self.ui.get_value())
 
     def setupUi(self, WorkWindow):
         self.func_lst = []
