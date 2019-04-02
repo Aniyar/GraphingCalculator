@@ -94,11 +94,13 @@ class Ui_WorkWindow(object):
         self.sl.setValue(1)
         self.sl.setTickPosition(QtWidgets.QSlider.TicksBelow)
         self.sl.setTickInterval(1)
+        
         self.sl.valueChanged.connect(self.scale_change)
 
         self.DrawButton = QtWidgets.QPushButton(self.centralwidget)
         self.DrawButton.setGeometry(QtCore.QRect(460, 30, 121, 31))
         self.DrawButton.setObjectName("DrawButton")
+        
         self.DrawButton.clicked.connect(self.run)
 
         self.FuctionsLabel = QtWidgets.QLabel(self.centralwidget)
@@ -125,6 +127,7 @@ class Ui_WorkWindow(object):
         self.KeyboardButton = QtWidgets.QPushButton(self.centralwidget)
         self.KeyboardButton.setGeometry(QtCore.QRect(280, 40, 31, 21))
         self.KeyboardButton.setObjectName("KeyboardButton")
+        
         self.KeyboardButton.clicked.connect(self.open_kb)
 
         self.label = QtWidgets.QLabel(self.centralwidget)
@@ -149,6 +152,7 @@ class Ui_WorkWindow(object):
         self.ColorButton = QtWidgets.QPushButton(self.centralwidget)
         self.ColorButton.setGeometry(QtCore.QRect(330, 30, 121, 31))
         self.ColorButton.setObjectName("ColorButton")
+        
         self.ColorButton.clicked.connect(self.color)
 
         self.graphicsView = pg.PlotWidget(self.centralwidget)
@@ -158,6 +162,7 @@ class Ui_WorkWindow(object):
         self.ClearButton = QtWidgets.QPushButton(self.centralwidget)
         self.ClearButton.setGeometry(QtCore.QRect(510, 500, 121, 31))
         self.ClearButton.setObjectName("ClearButton")
+        
         self.ClearButton.clicked.connect(self.clearall)
 
         WorkWindow.setCentralWidget(self.centralwidget)
